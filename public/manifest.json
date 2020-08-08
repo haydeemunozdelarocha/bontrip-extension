@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Bontrip",
+  "version": "1.0",
+  "description": "Bontrip travel planner extension.",
+  "icons": {
+    "192": "logo192.png",
+    "512": "logo512.png"
+  },
+  "browser_action": {
+    "default_icon": "logo192.png",
+    "default_title": "Bontrip",
+    "default_popup": "index.html"
+  }
+}

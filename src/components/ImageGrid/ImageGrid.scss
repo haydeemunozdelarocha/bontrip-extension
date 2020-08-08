@@ -1,0 +1,22 @@
+#images {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-container {
+  width: 120px;
+  height: 120px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border: 3px white solid;
+  transition: ease-in 2ms all;
+}
+
+.image-container.selected {
+  border: 5px #e5500b solid;
+  transition: ease-in 2ms all;
+}
