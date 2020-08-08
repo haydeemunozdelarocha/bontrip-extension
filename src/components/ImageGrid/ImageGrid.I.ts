@@ -1,3 +1,3 @@
 export interface ImageGridProps {
-    images: string[];
+    images: HTMLElement[];
 }
