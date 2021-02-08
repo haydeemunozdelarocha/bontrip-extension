@@ -1,3 +1,5 @@
+import {Logger} from "../tools/Logger";
+
 export class BrowserService {
     public static reloadTab(tabId: number) {
         chrome.tabs.reload(tabId);
@@ -7,7 +9,7 @@ export class BrowserService {
         chrome.tabs.query({
             active: true, currentWindow: true
         }, (foundTabs) => {
-            let currentTab = foundTabs[0] || {};
+            const currentTab = foundTabs[0] || {};
             callback(currentTab.id, currentTab);
         })
     }
@@ -20,13 +22,15 @@ export class BrowserService {
         });
     }
 
-    public static executeCodeInTab(tabId: number, scriptToBeExecuted: string, callback?: any) {
+    public static executeCodeInTab(tabId: number, scriptToBeExecuted: any, callback?: any, params?: any[]) {
+        Logger.log('PARAMS', params && params.length ? params.join(',') : '')
         chrome.tabs.executeScript(tabId, {
-            code: scriptToBeExecuted
+            code: `(${scriptToBeExecuted})("${params && params.length ? params.join(',') : ''}")`
         }, (results) => {
             if (chrome.runtime.lastError) {
-                // catching the error
+                Logger.error('Error: ', chrome.runtime.lastError)
             }
+
             if (callback) {
                 callback(results);
             }
@@ -54,33 +58,11 @@ export class BrowserService {
         chrome.runtime.onInstalled.addListener(callback);
     }
 
-    /**
-     * After installing the chrome extension,
-     * we should close the chrome webstore and reload the intent page.
-     */
-    public static executeInstallationFlow() {
-        chrome.tabs.query({url: 'https://go.userlane.com/*'}, tabs => {
-            if (tabs.length > 0) {
-
-                if (tabs[0] && tabs[0].id) {
-                    chrome.tabs.update(tabs[0].id, {active: true}, () => {
-                    });
-                    BrowserService.reloadTab(tabs[0].id);
-                    chrome.tabs.query({url: 'https://chrome.google.com/webstore/detail/bontrip-extension/*'}, chromeStoreTabs => {
-                        if (chromeStoreTabs.length > 0 && chromeStoreTabs[0].id) {
-                            chrome.tabs.remove(chromeStoreTabs[0].id);
-                        }
-                    });
-                }
-            }
-        })
-    }
-
     public static sendMessageToTab(tabId: number, message: any, responseCallback?: (response: any) => void) {
         chrome.tabs.sendMessage(tabId, message, responseCallback);
     }
 
-    public static createTab(url: string, active: boolean = false) {
+    public static createTab(url: string, active: boolean) {
         chrome.tabs.create({
             url,
             active

@@ -17,5 +17,8 @@
       "background.js"
     ],
     "persistent": true
-  }
+  },
+  "permissions": [
+    "activeTab"
+  ]
 }

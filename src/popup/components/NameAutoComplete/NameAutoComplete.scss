@@ -1,0 +1,23 @@
+
+.autocomplete {
+  position: relative;
+}
+
+.autocomplete > datalist {
+  position: absolute;
+  top: 50px;
+  background-color: white;
+  border: black solid 3px;
+  width: 315px;
+  color: black;
+}
+
+.autocomplete > datalist > option {
+  color: black;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+
+.autocomplete > datalist > option:hover {
+  background-color: #F5BF79;
+}
